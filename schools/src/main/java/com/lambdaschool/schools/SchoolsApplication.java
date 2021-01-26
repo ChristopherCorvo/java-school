@@ -21,6 +21,7 @@ public class SchoolsApplication
     {
         SpringApplication.run(SchoolsApplication.class,
             args);
+
     }
 
 }

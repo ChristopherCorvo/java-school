@@ -39,6 +39,28 @@ public class RestExceptionHandler
     {
         super();
     }
+    // this will be a catch all exception
+    @Override
+    protected ResponseEntity<Object> handleExceptionInternal(
+        Exception ex,
+        Object body,
+        HttpHeaders headers,
+        HttpStatus status,
+        WebRequest request)
+    {
+        ErrorDetail errorDetail = new ErrorDetail();
+        errorDetail.setTimestamp(new Date());
+        errorDetail.setStatus(status.value());
+        errorDetail.setTitle("Rest Internal Exception");
+        errorDetail.setDetail("Found an error with School: " + ex.getMessage());
+        errorDetail.setDeveloperMessage(ex.getClass()
+            .getName());
+        errorDetail.setErrors(helperFunctions.getConstraintViolation(ex));
+
+        return new ResponseEntity<>(errorDetail,
+            null,
+            status);
+    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> handleResourceNotFoundException(ResourceNotFoundException rnfe)
@@ -51,7 +73,9 @@ public class RestExceptionHandler
         errorDetail.setDeveloperMessage(rnfe.getClass().getName());
         errorDetail.setErrors(helperFunctions.getConstraintViolation(rnfe));
 
-        return new ResponseEntity<>(errorDetail, null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorDetail,
+                                    null,
+                                    HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ResourceFoundException.class)
@@ -69,25 +93,5 @@ public class RestExceptionHandler
         return new ResponseEntity<>(errorDetail, null, HttpStatus.BAD_REQUEST);
     }
 
-    @Override
-    protected ResponseEntity<Object> handleExceptionInternal(
-        Exception ex,
-        Object body,
-        HttpHeaders headers,
-        HttpStatus status,
-        WebRequest request)
-    {
-        ErrorDetail errorDetail = new ErrorDetail();
-        errorDetail.setTimestamp(new Date());
-        errorDetail.setStatus(status.value());
-        errorDetail.setTitle("Rest Internal Exception");
-        errorDetail.setDetail(ex.getMessage());
-        errorDetail.setDeveloperMessage(ex.getClass()
-            .getName());
-        errorDetail.setErrors(helperFunctions.getConstraintViolation(ex));
 
-        return new ResponseEntity<>(errorDetail,
-            null,
-            status);
-    }
 }

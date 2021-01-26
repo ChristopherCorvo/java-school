@@ -2,17 +2,17 @@ package com.lambdaschool.schools.models;
 
 public class ValidationError
 {
-    private String Code;
+    private String code;
     private String message;
 
     public String getCode()
     {
-        return Code;
+        return code;
     }
 
     public void setCode(String code)
     {
-        Code = code;
+        this.code = code;
     }
 
     public String getMessage()
@@ -28,6 +28,6 @@ public class ValidationError
     @Override
     public String toString()
     {
-        return "ValidationError{" + "Code='" + Code + '\'' + ", message='" + message + '\'' + '}';
+        return "ValidationError{" + "Code='" + code + '\'' + ", message='" + message + '\'' + '}';
     }
 }
